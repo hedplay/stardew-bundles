@@ -1,30 +1,29 @@
 @echo off
-chcp 65001 >nul
 cd /d "%~dp0"
-echo === ╨Я╤Г╨▒╨╗╨╕╨║╨░╤Ж╨╕╤П ╤Б╨░╨╣╤В╨░ ╨╜╨░ GitHub Pages ===
+echo === Публикация сайта на GitHub Pages ===
 echo.
 
 git add -A
 git diff --cached --quiet
 if not errorlevel 1 (
-  echo ╨Ш╨╖╨╝╨╡╨╜╨╡╨╜╨╕╨╣ ╨╜╨╡╤В тАФ ╨┐╤Г╨▒╨╗╨╕╨║╨╛╨▓╨░╤В╤М ╨╜╨╡╤З╨╡╨│╨╛.
+  echo Изменений нет - публиковать нечего.
   goto :end
 )
 
-git commit -m "╨Ю╨▒╨╜╨╛╨▓╨╗╨╡╨╜╨╕╨╡ ╤Б╨░╨╣╤В╨░ %date% %time%"
+git commit -m "Обновление сайта %date% %time%"
 if errorlevel 1 goto :fail
 
 git push
 if errorlevel 1 goto :fail
 
 echo.
-echo ╨У╨╛╤В╨╛╨▓╨╛. ╨б╨░╨╣╤В ╨╛╨▒╨╜╨╛╨▓╨╕╤В╤Б╤П ╤З╨╡╤А╨╡╨╖ 1-2 ╨╝╨╕╨╜╤Г╤В╤Л:
+echo Готово. Сайт обновится через 1-2 минуты:
 echo https://hedplay.github.io/stardew-bundles/
 goto :end
 
 :fail
 echo.
-echo ╨Э╨╡ ╤Г╨┤╨░╨╗╨╛╤Б╤М ╨╛╨┐╤Г╨▒╨╗╨╕╨║╨╛╨▓╨░╤В╤М. ╨Я╤А╨╛╨▓╨╡╤А╤М╤В╨╡ ╨╕╨╜╤В╨╡╤А╨╜╨╡╤В ╨╕ ╨▓╤Е╨╛╨┤ ╨▓ GitHub (gh auth status).
+echo Не удалось опубликовать. Проверьте интернет и вход в GitHub (gh auth status).
 
 :end
 echo.
