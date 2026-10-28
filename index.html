@@ -48,7 +48,7 @@
   .stat{display:flex;flex-direction:column;line-height:1.1}
   .stat b{font-size:20px;color:var(--gold);font-family:Georgia,serif}
   .stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
-  .tools{display:flex;gap:10px;align-items:center;flex-wrap:nowrap}
+  .tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;flex:1 1 auto}
   .tools .switch,.tools .btn{flex:none}
   .btn{
     background:var(--panel2);border:1px solid var(--line2);color:var(--text);
@@ -301,14 +301,14 @@
     .mapinner img{max-height:min(60vh,520px)}
   }
   /* ---------- global search ---------- */
-  .searchwrap{position:relative;flex:1 1 210px;min-width:150px;max-width:300px}
+  .searchwrap{position:relative;flex:1 1 300px;min-width:250px;max-width:430px}
   .searchwrap input{
-    width:100%;background:#0e140d;border:1px solid var(--line2);border-radius:10px;
-    color:var(--text);font:inherit;font-size:13px;padding:8px 30px 8px 11px;outline:none;
+    width:100%;background:#0e140d;border:1px solid var(--line2);border-radius:11px;
+    color:var(--text);font:inherit;font-size:15px;padding:10px 34px 11px 13px;outline:none;
   }
-  .searchwrap input::placeholder{color:#7b8a70}
+  .searchwrap input::placeholder{color:#9aab8c}
   .searchwrap input:focus{border-color:var(--green);box-shadow:0 0 0 2px rgba(131,184,98,.18)}
-  .searchwrap::after{content:"🔍";position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.6;pointer-events:none}
+  .searchwrap::after{content:"🔍";position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.65;pointer-events:none}
   .qpanel{
     position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:60;
     background:#1b2418;border:1px solid #4a6b3c;border-radius:12px;
@@ -317,18 +317,18 @@
   .qpanel[hidden]{display:none}
   .qgroup{padding:4px 0}
   .qgroup + .qgroup{border-top:1px solid #2c3a27}
-  .qgroup h5{margin:4px 8px 5px;font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:#80916f;font-weight:600}
+  .qgroup h5{margin:5px 9px 5px;font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:#80916f;font-weight:600}
   .qres{
-    display:flex;align-items:center;gap:8px;width:100%;text-align:left;
-    background:transparent;border:0;border-radius:8px;padding:5px 8px;color:var(--text);
-    font:inherit;font-size:13px;cursor:pointer;min-width:0;
+    display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+    background:transparent;border:0;border-radius:8px;padding:7px 9px;color:var(--text);
+    font:inherit;font-size:14px;cursor:pointer;min-width:0;
   }
   .qres:hover,.qres:focus-visible{background:rgba(255,255,255,.07);outline:none}
-  .qres img{width:24px;height:24px;flex:none;border-radius:5px;background:#0e140d;image-rendering:pixelated}
-  .qres .qemoji{width:24px;text-align:center;font-size:16px;flex:none}
+  .qres img{width:26px;height:26px;flex:none;border-radius:5px;background:#0e140d;image-rendering:pixelated}
+  .qres .qemoji{width:26px;text-align:center;font-size:17px;flex:none}
   .qres .qn{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .qres .qs{margin-left:auto;font-size:11px;color:var(--muted);white-space:nowrap;padding-left:8px}
-  .qall{display:block;width:100%;text-align:left;background:transparent;border:0;color:var(--green2);font:inherit;font-size:12px;padding:5px 8px;cursor:pointer}
+  .qall{display:block;width:100%;text-align:left;background:transparent;border:0;color:var(--green2);font:inherit;font-size:12.5px;padding:7px 9px;cursor:pointer}
   .qall:hover{text-decoration:underline}
   .qempty{padding:14px;text-align:center;color:var(--muted);font-size:13px}
 
@@ -2845,7 +2845,7 @@ function renderSearch() {
   if (!q) { qPanel.hidden = true; qPanel.innerHTML = ""; return; }
   const hit = t => norm(t).indexOf(q) >= 0;
 
-  const npcs = [], fests = [], bundles = [], items = [], crops = [], fish = [], guides = [], cats = [];
+  const npcs = [], fests = [], bundles = [], items = [], crops = [], guides = [], cats = [];
 
   for (const p of NPC_LIST) {
     if ((hit(p.n) || hit(p.id)) && npcs.length < 5) {
@@ -2866,17 +2866,12 @@ function renderSearch() {
   }
   for (const x of WITEMS) {
     if ((hit(x.n) || hit(x.en)) && items.length < 6) {
-      items.push(qRow("item", x._i, `<img src="${WICON[x.ic]}" alt="">`, x.n, x.cr + (x.p ? " · " + x.p + "g" : "")));
+      items.push(qRow("item", x._i, `<img src="${WICON[x.ic]}" alt="">`, x.n, ""));
     }
   }
   for (const x of WCROPS) {
     if ((hit(x.n) || hit(x.en)) && crops.length < 4) {
       crops.push(qRow("crop", x._i, `<img src="${WICON[x.ic]}" alt="">`, x.n, "культура"));
-    }
-  }
-  for (const x of WFISH) {
-    if ((hit(x.n) || hit(x.en)) && fish.length < 4) {
-      fish.push(qRow("fish", x._i, `<img src="${WICON[x.ic]}" alt="">`, x.n, "рыба"));
     }
   }
   for (const g of GUIDES) {
@@ -2895,7 +2890,6 @@ function renderSearch() {
     html += `<div class="qgroup"><h5>Предметы</h5>${items.join("")}<button type="button" class="qall" data-act="allitems">Все совпадения в справочнике →</button></div>`;
   }
   html += searchGroup("Культуры", crops);
-  html += searchGroup("Рыба", fish);
   html += searchGroup("Гайды", guides);
   html += searchGroup("Каталоги", cats);
   html += searchGroup("Жители", npcs);
