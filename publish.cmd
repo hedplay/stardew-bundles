@@ -10,14 +10,14 @@ if not errorlevel 1 (
   goto :end
 )
 
-git commit -m "Обновление сайта %date% %time%"
+git commit -m "Update site %date% %time%"
 if errorlevel 1 goto :fail
 
 git push
 if errorlevel 1 goto :fail
 
 echo.
-echo Готово. Сайт обновится через 1-2 минуты:
+echo Готово. Обычно сайт обновляется за 1-2 минуты, иногда до 10 минут (кэш GitHub) - обновите с Ctrl+F5:
 echo https://hedplay.github.io/stardew-bundles/
 goto :end
 
