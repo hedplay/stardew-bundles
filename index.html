@@ -445,6 +445,12 @@
   .wgift:hover{background:#233020;border-color:#5d8f45}
   .wnote{font-size:11.5px;color:#93a186}
   .wnote.mt{margin-top:10px}
+  .feststeps{margin:6px 0 0;padding-left:20px;font-size:12.5px;line-height:1.5;color:#c9d5be}
+  .feststeps li{margin:3px 0}
+  .festchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .festchip{display:inline-flex;align-items:center;gap:4px;background:#151d13;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12px;color:#dbe5d2;line-height:1.3}
+  .festchip.prize{border-color:#4a6b3c;color:#dfead2}
+  .festchip.shop{color:#c9d5be}
   .wsec p.wnote{font-size:11.5px;color:#93a186}
   /* ---------- recipes ---------- */
   .wreqrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
@@ -3425,23 +3431,106 @@ const FEST_DETAILS = {
 };
 
 
+const FEST_STEPS = {
+  "egg-festival": [
+    "Приходите на городскую площадь 9:00–14:00.",
+    "До охоты зайдите к стенду Пьера и купите семена клубники (100g) и декор.",
+    "Поговорите с Льюисом, чтобы начать охоту за яйцами.",
+    "Соберите 9 яиц за 50 секунд (один игрок).",
+    "Выигрыш: Соломенная шляпа (впервые) или Призовой билет."
+  ],
+  "flower-dance": [
+    "Приходите на площадь 9:00–14:00.",
+    "Нужна дружба не ниже 4 сердец с партнёром.",
+    "Поговорите с Льюисом и выберите партнёра для танца.",
+    "Призов нет — только танец."
+  ],
+  "desert-festival": [
+    "Приходите в пустыню 15–17 весны.",
+    "Участвуйте в гонках, поедании и дуэлях.",
+    "Покупайте еду и предметы у торговцев.",
+    "Награды за победы в испытаниях."
+  ],
+  "luau": [
+    "Приходите на пляж 9:00–14:00.",
+    "До начала купите декор у Пьера.",
+    "Выберите съедобный некулинарный предмет для супа (лучше золотой/иридиевый).",
+    "Поговорите с Льюисом и начните дегустацию.",
+    "Результат зависит от качества ингредиента: дружба +120/+60/0/-100/-200."
+  ],
+  "trout-derby": [
+    "Приходите в лес Синдерсэп 20–21 лета.",
+    "Удочка выдаётся, наживка не нужна.",
+    "Ловите форель; призы за количество и размер."
+  ],
+  "dance-of-the-moonlight-jellies": [
+    "Приходите на пляж вечером 28 лета.",
+    "Просто смотрите на медуз; призов нет."
+  ],
+  "stardew-valley-fair": [
+    "Приходите в город 9:00–15:00.",
+    "Подготовьте до 9 предметов для витрины (6 категорий, 90+ очков).",
+    "Поговорите с Льюисом для судейства.",
+    "Играйте в мини-игры (рыбалка 50g, рогатка 50g, бросок камня бесплатно).",
+    "Обменивайте жетоны на призы у входа (макс. 9999).",
+    "Колесо фортуны: ставьте на зелёное (73.3%)."
+  ],
+  "spirit-s-eve": [
+    "Приходите в город 22:00–23:50.",
+    "Зайдите в лабиринт: секретный проход слева от знака '?'.",
+    "Нечётные годы: Золотая тыква в сундуке.",
+    "Чётные годы: Призовой билет в сундуке.",
+    "Выход через вагонетку.",
+    "Купите тыквы-светильники у Пьера до/после."
+  ],
+  "squid-fest": [
+    "Приходите в лес Синдерсэп 12–13 зимы.",
+    "Удочка выдаётся.",
+    "Ловите кальмаров; призы за количество/размер."
+  ],
+  "festival-of-ice": [
+    "Приходите в лес Синдерсэп 9:00–14:00.",
+    "Удочка выдаётся; поймайте ≥5 рыб за 2.5 мин.",
+    "Рыба в лесном пруду считается; в реке — нет.",
+    "Первый выигрыш: крючок, спиннер, магнит, шапка моряка; дальше — призовой билет."
+  ],
+  "night-market": [
+    "Приходите на пляж 15–17 зимы вечером.",
+    "Посетите карнавальные лавки, еду и напитки.",
+    "Прокатитесь на подводной лодке (1000g) за иридием и редкими предметами.",
+    "Посмотрите русалочье шоу."
+  ],
+  "feast-of-the-winter-star": [
+    "18 зимы получите письмо с именем получателя.",
+    "Подготовьте подарок для назначенного жителя.",
+    "Приходите на площадь 9:00–14:00 25 зимы.",
+    "Отдайте подарок; получите подарок от секретного дарителя (×5 дружбы).",
+    "Купите декор у Пьера."
+  ]
+};
+
+
 function openFest(id) {
   const f = WFEST.find(v => v.id === id);
   if (!f) return;
   const det = FEST_DETAILS[id] || {};
+  const steps = FEST_STEPS[id] || [];
+  const prizeChips = (det.prizes || "").split(/[;·]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip prize">🎁 ${escapeHtml(s)}</span>`).join("");
+  const shopChips = (det.shop || "").split(" · ").map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip shop">🛒 ${escapeHtml(s)}</span>`).join("");
+  const stepHtml = steps.length ? `<ol class="feststeps">${steps.map(s => `<li>${escapeHtml(s)}</li>`).join("")}</ol>` : "";
   openWikiModal(`
     <div class="wtop"><div class="wemoji big">${f.emoji}</div><div><h3 id="wTitle">${escapeHtml(f.ru)}<span class="en">${escapeHtml(f.en)}</span></h3>
       <div class="wmeta"><span>Дата: <b>${escapeHtml(festDate(f))}</b></span><span>Место: <b>${escapeHtml(f.place)}</b></span><span>Время: <b>${escapeHtml(f.hours)}</b></span></div></div></div>
     <div class="wdesc">${escapeHtml(f.desc)}</div>
     ${f.att ? `<div class="wsec"><h4>Кто приходит</h4><p>Около ${f.att} жителей — почти весь город.</p></div>` : ""}
-    ${det.prizes ? `<div class="wsec"><h4>Призы</h4><p>${escapeHtml(det.prizes)}</p></div>` : ""}
+    ${stepHtml ? `<div class="wsec"><h4>Как получить приз / пройти фестиваль</h4>${stepHtml}</div>` : ""}
+    ${prizeChips ? `<div class="wsec"><h4>Призы</h4><div class="festchips">${prizeChips}</div></div>` : ""}
     ${det.bring ? `<div class="wsec"><h4>Что нужно принести / сделать</h4><p>${escapeHtml(det.bring)}</p></div>` : ""}
-    ${det.shop ? `<div class="wsec"><h4>Магазин на фестивале</h4><p>${escapeHtml(det.shop)}</p></div>` : ""}
+    ${shopChips ? `<div class="wsec"><h4>Магазин на фестивале</h4><div class="festchips">${shopChips}</div></div>` : ""}
     ${det.tips ? `<div class="wsec"><h4>Советы</h4><p>${escapeHtml(det.tips)}</p></div>` : ""}
     <div class="wgo"><button type="button" class="btn" data-fest-season="${f.season}">Показать в календаре</button></div>
   `);
 }
-
 /* ---------- global search ---------- */
 const qEl = document.getElementById("q");
 const qPanel = document.getElementById("qpanel");
