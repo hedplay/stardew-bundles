@@ -451,6 +451,7 @@
   .festchip{display:inline-flex;align-items:center;gap:4px;background:#151d13;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-size:12px;color:#dbe5d2;line-height:1.3}
   .festchip.prize{border-color:#4a6b3c;color:#dfead2}
   .festchip.shop{color:#c9d5be}
+  .festico{width:18px;height:18px;image-rendering:pixelated;flex:none;border-radius:3px;background:#0e140d}
   .wsec p.wnote{font-size:11.5px;color:#93a186}
   /* ---------- recipes ---------- */
   .wreqrow{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px}
@@ -3515,8 +3516,13 @@ function openFest(id) {
   if (!f) return;
   const det = FEST_DETAILS[id] || {};
   const steps = FEST_STEPS[id] || [];
-  const prizeChips = (det.prizes || "").split(/[;·]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip prize">🎁 ${escapeHtml(s)}</span>`).join("");
-  const shopChips = (det.shop || "").split(" · ").map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip shop">🛒 ${escapeHtml(s)}</span>`).join("");
+  function festItemPic(label) {
+    const name = String(label).replace(/\s+\d+g\s*$/i, "").trim();
+    const it = WITEMS.find(x => x.n === name) || WITEMS.find(x => name && x.n && x.n.toLowerCase() === name.toLowerCase());
+    return it ? `<img src="${WICON[it.ic]}" alt="" class="festico">` : "";
+  }
+  const prizeChips = (det.prizes || "").split(";").map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip prize">${festItemPic(s)}${escapeHtml(s)}</span>`).join("");
+  const shopChips = (det.shop || "").split(/[\u00B7\uFFFD]/).map(s => s.trim()).filter(Boolean).map(s => `<span class="festchip shop">${festItemPic(s)}${escapeHtml(s)}</span>`).join("");
   const stepHtml = steps.length ? `<ol class="feststeps">${steps.map(s => `<li>${escapeHtml(s)}</li>`).join("")}</ol>` : "";
   openWikiModal(`
     <div class="wtop"><div class="wemoji big">${f.emoji}</div><div><h3 id="wTitle">${escapeHtml(f.ru)}<span class="en">${escapeHtml(f.en)}</span></h3>
