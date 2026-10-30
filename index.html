@@ -67,7 +67,7 @@
   .room-head h2 .en{font-family:"Segoe UI",sans-serif;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:.4px}
   .ico{font-size:19px;filter:saturate(.9)}
   .room-reward{font-size:12.5px;color:var(--gold);opacity:.9;padding-bottom:2px}
-  .room-reward::before{content:"Награда комнаты: ";color:var(--muted)}
+  .room-reward::before{content:"Предметы, которые можно получить: ";color:var(--muted)}
   .room-meter{margin-left:auto;display:flex;align-items:center;gap:9px;padding-bottom:3px}
   .room-meter .bar{width:110px;height:6px;border-radius:4px;background:#0d120c;overflow:hidden}
   .room-meter .bar i{display:block;height:100%;background:linear-gradient(90deg,#5f9a45,#a8d184)}
@@ -92,7 +92,7 @@
   }
   .badge.ok{background:#33502a;border-color:#5d8f45;color:#d8edc4}
   .reward{font-size:11.5px;color:var(--gold);opacity:.92;margin-top:4px}
-  .reward::before{content:"награда: ";color:var(--muted);opacity:.9}
+  .reward::before{content:"предметы, которые можно получить: ";color:var(--muted);opacity:.9}
   .items{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
   .item{
     display:grid;grid-template-columns:18px 26px 1fr;gap:8px;align-items:start;
@@ -3530,7 +3530,7 @@ function openFest(id) {
     <div class="wdesc">${escapeHtml(f.desc)}</div>
     ${f.att ? `<div class="wsec"><h4>Кто приходит</h4><p>Около ${f.att} жителей — почти весь город.</p></div>` : ""}
     ${stepHtml ? `<div class="wsec"><h4>Как получить приз / пройти фестиваль</h4>${stepHtml}</div>` : ""}
-    ${prizeChips ? `<div class="wsec"><h4>Призы</h4><div class="festchips">${prizeChips}</div></div>` : ""}
+    ${prizeChips ? `<div class="wsec"><h4>Предметы, которые можно получить</h4><div class="festchips">${prizeChips}</div></div>` : ""}
     ${det.bring ? `<div class="wsec"><h4>Что нужно принести / сделать</h4><p>${escapeHtml(det.bring)}</p></div>` : ""}
     ${shopChips ? `<div class="wsec"><h4>Магазин на фестивале</h4><div class="festchips">${shopChips}</div></div>` : ""}
     ${det.tips ? `<div class="wsec"><h4>Советы</h4><p>${escapeHtml(det.tips)}</p></div>` : ""}
